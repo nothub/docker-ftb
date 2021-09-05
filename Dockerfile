@@ -1,9 +1,9 @@
-FROM openjdk:8-jre-slim-buster
+FROM openjdk:8-jre-slim-bullseye
 
 ENV FTB_PACK="8"
 ENV FTB_PACK_VER="142"
-ENV MC_EULA="false"
 ENV JVM_MEMORY="4096M"
+ENV MC_EULA="false"
 
 # tini
 ARG TINI_VER="v0.19.0"
