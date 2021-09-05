@@ -9,10 +9,12 @@ echo JVM_MEMORY="$JVM_MEMORY"
 cd /opt/server
 
 if [[ $(find . -type f | wc -l) -lt 1 ]]; then
+  echo "INSTALLING SERVER"
   /opt/setup/serverinstall_"$FTB_PACK"_"$FTB_PACK_VER" --auto --noscript --path .
   echo "eula=$MC_EULA" >eula.txt
 fi
 
+echo "STARTING SERVER"
 java \
   -XX:+UseG1GC \
   -XX:+UnlockExperimentalVMOptions \
