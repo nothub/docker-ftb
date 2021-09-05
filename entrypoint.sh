@@ -5,21 +5,22 @@ set -e
 echo FTB_PACK="$FTB_PACK"
 echo FTB_PACK_VER="$FTB_PACK_VER"
 echo JVM_MEMORY="$JVM_MEMORY"
+echo MC_EULA="$MC_EULA"
+
+if test -z "$FTB_PACK"; then
+  echo "no pack id defined, missing env var: $FTB_PACK"
+  exit 1
+fi
+
+curl --location https://api.modpacks.ch/public/modpack/0/0/server/linux --output /opt/setup/serverinstall
+chmod +x /opt/setup/serverinstall
 
 cd /opt/server
-
 if [[ $(find . -type f | wc -l) -lt 1 ]]; then
   echo "INSTALLING SERVER"
-  /opt/setup/serverinstall_"$FTB_PACK"_"$FTB_PACK_VER" --auto --noscript --path .
+  /opt/setup/serverinstall "$FTB_PACK" "$FTB_PACK_VER" --auto --path .
   echo "eula=$MC_EULA" >eula.txt
 fi
 
 echo "STARTING SERVER"
-java \
-  -XX:+UseG1GC \
-  -XX:+UnlockExperimentalVMOptions \
-  -Xms"$JVM_MEMORY" \
-  -Xmx"$JVM_MEMORY" \
-  -jar \
-  forge-1.12.2-14.23.5.2847-universal.jar \
-  nogui
+./start.sh

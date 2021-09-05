@@ -1,9 +1,16 @@
 FROM openjdk:8-jre-slim-bullseye
 
-ENV FTB_PACK="0"
-ENV FTB_PACK_VER="0"
-ENV JVM_MEMORY="4096M"
+ENV FTB_PACK=""
+ENV FTB_PACK_VER=""
+ENV JVM_MEMORY=""
 ENV MC_EULA="false"
+
+# dependencies
+RUN apt-get update                                                   \
+ && apt-get install    --quiet --yes --no-install-recommends curl jq \
+ && apt-get clean      --quiet --yes                                 \
+ && apt-get autoremove --quiet --yes                                 \
+ && rm -rf /var/lib/apt/lists/*
 
 # tini
 ARG TINI_VER="v0.19.0"
@@ -13,10 +20,6 @@ RUN chmod +x /sbin/tini
 # runtime entrypoint
 COPY entrypoint.sh /opt/setup/entrypoint.sh
 RUN chmod +x /opt/setup/entrypoint.sh
-
-# ftb installer
-ADD https://api.modpacks.ch/public/modpack/"$FTB_PACK"/"$FTB_PACK_VER"/server/linux /opt/setup/serverinstall_"$FTB_PACK"_"$FTB_PACK_VER"
-RUN chmod +x /opt/setup/serverinstall_"$FTB_PACK"_"$FTB_PACK_VER"
 
 EXPOSE 25565
 VOLUME /opt/server
