@@ -1,7 +1,7 @@
 FROM openjdk:8-jre-slim-bullseye
 
-ENV FTB_PACK="8"
-ENV FTB_PACK_VER="142"
+ENV FTB_PACK="0"
+ENV FTB_PACK_VER="0"
 ENV JVM_MEMORY="4096M"
 ENV MC_EULA="false"
 
